@@ -44,12 +44,7 @@ export CONFIGURE_DB_FIREWALL=true
 export MYSQL_DBHOST_PASSWORD="test"
 
 
-# shellcheck source=lib/lib.sh
-source /tmp/lib.sh
 
-update_repos
 
-install_packages "curl"
-
-bash /vagrant/installers/panel.sh
-bash /vagrant/installers/wings.sh
+bash ~/installers/panel.sh
+bash ~/installers/wings.sh
