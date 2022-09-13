@@ -27,7 +27,7 @@ set -e
 # https://github.com/vilhelmprytz/pterodactyl-installer                     #
 #                                                                           #
 #############################################################################
-
+source /tmp/lib.sh || source <(curl -sL "$GITHUB_BASE_URL"/lib/lib.sh)
 export GITHUB_SOURCE="major-refactor"
 export GITHUB_BASE_URL="https://raw.githubusercontent.com/vilhelmprytz/pterodactyl-installer/$GITHUB_SOURCE"
 export FQDN="test4.madsiv.com"
