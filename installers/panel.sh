@@ -355,7 +355,8 @@ letsencrypt() {
   output "Configuring Let's Encrypt..."
 
   # Obtain certificate
-  certbot --nginx --non-interactive --redirect --no-eff-email --email "$email" -d "$FQDN" || FAILED=true
+  certbot --nginx --non-interactive --agree-tos --redirect --no-eff-email --email "$email" -d "$FQDN" || FAILED=true
+  ssldone="true"
 
   # Check if it succeded
   if [ ! -d "/etc/letsencrypt/live/$FQDN/" ] || [ "$FAILED" == true ]; then

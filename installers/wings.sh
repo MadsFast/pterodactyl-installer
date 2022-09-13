@@ -146,9 +146,6 @@ letsencrypt() {
   # If user has nginx
   systemctl stop nginx || true
 
-  # Obtain certificate
-  certbot certonly --no-eff-email --email "$EMAIL" --standalone -d "$FQDN" || FAILED=true
-
   systemctl start nginx || true
 
   # Check if it succeded
