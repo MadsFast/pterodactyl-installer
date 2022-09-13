@@ -458,6 +458,7 @@ if [[ "$CONFIGURE_SSL" =~ [Yy] ]]
     --daemonSFTPPort=2022 \
     --daemonBase=/var/lib/pterodactyl/volumes
 fi
+  mkdir /etc/pterodactyl
   php artisan p:node:configuration 1 > /etc/pterodactyl/config.yml
 }
 
