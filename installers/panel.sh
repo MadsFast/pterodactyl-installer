@@ -27,7 +27,7 @@ set -e
 # https://github.com/vilhelmprytz/pterodactyl-installer                     #
 #                                                                           #
 #############################################################################
-
+source /tmp/lib.sh || source <(curl -sL "$GITHUB_BASE_URL"/lib/lib.sh)
 
 # ------------------ Variables ----------------- #
 #Total ram for node creation
@@ -168,40 +168,6 @@ configure() {
   # Create Location  
   php artisan p:location:make --short=vps --long="Node1"
   
-  #Create Node
-if [[ "$CONFIGURE_SSL" =~ [Yy] ]]
-  then
-  php artisan p:node:make --name=VPS --description="Automaticly added" \
-    --locationId=1 \
-    --fqdn=$FQDN \
-    --public=1 \
-    --scheme=https \
-    --proxy=no --maintenance=no \
-    --maxMemory=$TOTAL_MEM \
-    --overallocateMemory=0 \
-    --maxDisk=$Maxdisk \
-    --overallocateDisk=-1 \
-    --uploadSize=1024 \
-    --daemonListeningPort=8080 \
-    --daemonSFTPPort=2022 \
-    --daemonBase=/var/lib/pterodactyl/volumes
-  else
-  php artisan p:node:make --name=VPS --description="Automaticly added" \
-    --locationId=1 \
-    --fqdn=$FQDN \
-    --public=1 \
-    --scheme=http \
-    --proxy=no --maintenance=no \
-    --maxMemory=$TOTAL_MEM \
-    --overallocateMemory=0 \
-    --maxDisk=$Maxdisk \
-    --overallocateDisk=-1 \
-    --uploadSize=1024 \
-    --daemonListeningPort=8080 \
-    --daemonSFTPPort=2022 \
-    --daemonBase=/var/lib/pterodactyl/volumes
-fi
-  php artisan p:node:configuration 1 > /etc/pterodactyl/config.yml
   success "Configured environment!"
 }
 
@@ -455,6 +421,44 @@ configure_nginx() {
   success "Nginx configured!"
 }
 
+wings_automatic() {
+
+  cd /var/www/pterodactyl
+    #Create Node
+if [[ "$CONFIGURE_SSL" =~ [Yy] ]]
+  then
+  php artisan p:node:make --name=VPS --description="Automaticly added" \
+    --locationId=1 \
+    --fqdn=$FQDN \
+    --public=1 \
+    --scheme=https \
+    --proxy=no --maintenance=no \
+    --maxMemory=$TOTAL_MEM \
+    --overallocateMemory=0 \
+    --maxDisk=$Maxdisk \
+    --overallocateDisk=-1 \
+    --uploadSize=1024 \
+    --daemonListeningPort=8080 \
+    --daemonSFTPPort=2022 \
+    --daemonBase=/var/lib/pterodactyl/volumes
+  else
+  php artisan p:node:make --name=VPS --description="Automaticly added" \
+    --locationId=1 \
+    --fqdn=$FQDN \
+    --public=1 \
+    --scheme=http \
+    --proxy=no --maintenance=no \
+    --maxMemory=$TOTAL_MEM \
+    --overallocateMemory=0 \
+    --maxDisk=$Maxdisk \
+    --overallocateDisk=-1 \
+    --uploadSize=1024 \
+    --daemonListeningPort=8080 \
+    --daemonSFTPPort=2022 \
+    --daemonBase=/var/lib/pterodactyl/volumes
+fi
+  php artisan p:node:configuration 1 > /etc/pterodactyl/config.yml
+}
 
 # --------------- Main functions --------------- #
 
@@ -472,6 +476,7 @@ perform_install() {
   install_pteroq
   configure_nginx
   [ "$CONFIGURE_LETSENCRYPT" == true ] && letsencrypt
+  wings_automatic
 
   return 0
 }
