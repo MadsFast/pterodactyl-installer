@@ -32,6 +32,11 @@ set -e
 source /tmp/lib.sh || source <(curl -sL "$GITHUB_BASE_URL"/lib/lib.sh)
 
 # ------------------ Variables ----------------- #
+#Total ram for node creation
+TOTAL_MEM=$(free -m | grep Mem: | awk '{print $2}')
+
+#Maxdisk for node creation
+Maxdisk=$(echo $(($(stat -f --format="%a*%S" .))))
 
 # Domain name / IP
 FQDN="${FQDN:-localhost}"
@@ -161,7 +166,44 @@ configure() {
     --name-last="$user_lastname" \
     --password="$user_password" \
     --admin=1
-
+  
+  # Create Location  
+  php artisan p:location:make --short=vps --long="Node1"
+  
+  #Create Node
+if [[ "$CONFIGURE_SSL" =~ [Yy] ]]
+  then
+  php artisan p:node:make --name=VPS --description="Automaticly added" \
+    --locationId=1 \
+    --fqdn=$FQDN \
+    --public=1 \
+    --scheme=https \
+    --proxy=no --maintenance=no /
+    --maxMemory=$TOTAL_MEM \
+    --overallocateMemory=0 \
+    --maxDisk=$Maxdisk \
+    --overallocateDisk=-1 \
+    --uploadSize=1024 \
+    --daemonListeningPort=8080 \
+    --daemonSFTPPort=2022 \
+    --daemonBase=/var/lib/pterodactyl/volumes
+  else
+  php artisan p:node:make --name=VPS --description="Automaticly added" \
+    --locationId=1 \
+    --fqdn=$FQDN \
+    --public=1 \
+    --scheme=http \
+    --proxy=no --maintenance=no /
+    --maxMemory=$TOTAL_MEM \
+    --overallocateMemory=0 \
+    --maxDisk=$Maxdisk \
+    --overallocateDisk=-1 \
+    --uploadSize=1024 \
+    --daemonListeningPort=8080 \
+    --daemonSFTPPort=2022 \
+    --daemonBase=/var/lib/pterodactyl/volumes
+fi
+  php artisan p:node:configuration 1 > /etc/pterodactyl/config.yml
   success "Configured environment!"
 }
 
@@ -253,6 +295,9 @@ ubuntu_dep() {
   # Add the MariaDB repo (bionic has mariadb version 10.1 and we need newer than that)
   [ "$OS_VER_MAJOR" == "18" ] && curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | bash
 
+  # Ubuntu 22 comes up with a annoying need restart thing on some kernels. So just to disable for no human interaction
+  sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
+
   true
 }
 
@@ -333,7 +378,10 @@ firewall_ports() {
   output "Opening ports: 22 (SSH), 80 (HTTP) and 443 (HTTPS)"
 
   firewall_allow_ports "22 80 443"
-
+  # Fix issue where the command above would not put it through.
+  sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+  sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+  sudo iptables -A INPUT -p tcp --dport 22 -j ACCEPT
   success "Firewall ports opened!"
 }
 
@@ -343,7 +391,7 @@ letsencrypt() {
   output "Configuring Let's Encrypt..."
 
   # Obtain certificate
-  certbot --nginx --redirect --no-eff-email --email "$email" -d "$FQDN" || FAILED=true
+  certbot --nginx --non-interactive --redirect --no-eff-email --email "$email" -d "$FQDN" || FAILED=true
 
   # Check if it succeded
   if [ ! -d "/etc/letsencrypt/live/$FQDN/" ] || [ "$FAILED" == true ]; then
@@ -408,6 +456,7 @@ configure_nginx() {
 
   success "Nginx configured!"
 }
+
 
 # --------------- Main functions --------------- #
 
