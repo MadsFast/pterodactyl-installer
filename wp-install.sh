@@ -46,5 +46,5 @@ export MYSQL_DBHOST_PASSWORD="test"
 
 
 
-bash ~/installers/panel.sh
-bash ~/installers/wings.sh
+bash ~/pterodactyl-installer/installers/panel.sh
+bash ~/pterodactyl-installer/installers/wings.sh
