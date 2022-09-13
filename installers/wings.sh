@@ -179,7 +179,9 @@ configure_mysql() {
 
   success "MySQL configured!"
 }
-
+finishwings() {
+  serivce wings start
+}
 # --------------- Main functions --------------- #
 
 perform_install() {
@@ -189,7 +191,8 @@ perform_install() {
   systemd_file
   [ "$CONFIGURE_DBHOST" == true ] && configure_mysql
   [ "$CONFIGURE_LETSENCRYPT" == true ] && letsencrypt
-
+  finishwings
+  
   return 0
 }
 
