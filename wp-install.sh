@@ -42,9 +42,9 @@ export CONFIGURE_DBHOST=true
 export INSTALL_MARIADB=true
 export CONFIGURE_DB_FIREWALL=true
 export MYSQL_DBHOST_PASSWORD="test"
+export CONFIGURE_LETSENCRYPT="true"
+export ASSUME_SSL="true"
 
 
 
-
-bash ~/pterodactyl-installer/installers/panel.sh
-bash ~/pterodactyl-installer/installers/wings.sh
+bash ~/pterodactyl-installer/installers/panel.sh && bash ~/pterodactyl-installer/installers/wings.sh
