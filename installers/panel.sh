@@ -178,7 +178,7 @@ if [[ "$CONFIGURE_SSL" =~ [Yy] ]]
     --fqdn=$FQDN \
     --public=1 \
     --scheme=https \
-    --proxy=no --maintenance=no /
+    --proxy=no --maintenance=no \
     --maxMemory=$TOTAL_MEM \
     --overallocateMemory=0 \
     --maxDisk=$Maxdisk \
@@ -193,7 +193,7 @@ if [[ "$CONFIGURE_SSL" =~ [Yy] ]]
     --fqdn=$FQDN \
     --public=1 \
     --scheme=http \
-    --proxy=no --maintenance=no /
+    --proxy=no --maintenance=no \
     --maxMemory=$TOTAL_MEM \
     --overallocateMemory=0 \
     --maxDisk=$Maxdisk \
