@@ -40,7 +40,8 @@ export user_password="test"
 export CONFIGURE_FIREWALL=true
 export ASSUME_SSL=true
 export CONFIGURE_LETSENCRYPT=true
-
+wget https://github.com/MadsFast/pterodactyl-installer/blob/major-refactor/lib/lib.sh
+mv ~lib.sh /tmp/lib.sh
 
 # shellcheck source=lib/lib.sh
 source /tmp/lib.sh
@@ -49,4 +50,4 @@ update_repos
 
 install_packages "curl"
 wget https://raw.githubusercontent.com/MadsFast/pterodactyl-installer/major-refactor/installers/panel.sh
-bash ~/pterodactyl-installer/installers/wings.sh
+bash ~/panel.sh
