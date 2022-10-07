@@ -35,7 +35,7 @@ export CONFIGURE_DBHOST=true
 export INSTALL_MARIADB=true
 export CONFIGURE_DB_FIREWALL=true
 export MYSQL_DBHOST_PASSWORD="test"
-wget https://github.com/MadsFast/pterodactyl-installer/blob/major-refactor/lib/lib.sh
+wget https://raw.githubusercontent.com/MadsFast/pterodactyl-installer/major-refactor/lib/lib.sh
 mv ~/lib.sh /tmp/lib.sh
 # shellcheck source=lib/lib.sh
 source /tmp/lib.sh
