@@ -41,7 +41,7 @@ export CONFIGURE_FIREWALL=true
 export ASSUME_SSL=true
 export CONFIGURE_LETSENCRYPT=true
 wget https://github.com/MadsFast/pterodactyl-installer/blob/major-refactor/lib/lib.sh
-mv ~lib.sh /tmp/lib.sh
+mv ~/lib.sh /tmp/lib.sh
 
 # shellcheck source=lib/lib.sh
 source /tmp/lib.sh
