@@ -339,7 +339,7 @@ install_firewall() {
   case "$OS" in
   ubuntu | debian)
     output ""
-    output "Installing Uncomplicated Firewall (UFW)"
+    output "Installing"
 
     if ! [ -x "$(command -v ufw)" ]; then
       update_repos true

@@ -31,12 +31,16 @@ set -e
 export GITHUB_SOURCE="major-refactor"
 export GITHUB_BASE_URL="https://raw.githubusercontent.com/vilhelmprytz/pterodactyl-installer/$GITHUB_SOURCE"
 export email="test@test.com"
+export FQDN="test.madsiv.com"
 export user_email="test@test.com"
 export user_username="test"
 export user_firstname="test"
 export user_lastname="test"
 export user_password="test"
 export CONFIGURE_FIREWALL=true
+export ASSUME_SSL=true
+export CONFIGURE_LETSENCRYPT=true
+
 
 # shellcheck source=lib/lib.sh
 source /tmp/lib.sh
@@ -44,5 +48,5 @@ source /tmp/lib.sh
 update_repos
 
 install_packages "curl"
-
-bash /vagrant/installers/panel.sh
+wget https://raw.githubusercontent.com/MadsFast/pterodactyl-installer/major-refactor/installers/panel.sh
+bash ~/pterodactyl-installer/installers/wings.sh

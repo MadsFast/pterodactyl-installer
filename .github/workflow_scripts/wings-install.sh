@@ -42,5 +42,5 @@ source /tmp/lib.sh
 update_repos
 
 install_packages "curl"
-
-bash /vagrant/installers/wings.sh
+https://raw.githubusercontent.com/MadsFast/pterodactyl-installer/major-refactor/installers/wings.sh
+bash ~/pterodactyl-installer/installers/wings.sh
